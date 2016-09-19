@@ -14,8 +14,6 @@ void error() {
 void parse(char arguments[]) {
 	char **args;	// pointer to a pointer. for multiple words
 
-	
-
 }
 
 int main(int argc, char *argv[]) {
@@ -35,12 +33,34 @@ int main(int argc, char *argv[]) {
 
 		args = parse(input);
 	        switch(input) {
-		case "exit" :
+		case "exit" {
 		  exit(0);
+		  break;
+		}
 
-		case "cd" :
+		case "cd" {
+		  if ((args[1]) == NULL) {
+		    getenv("HOME");
+		  }
+		  else {
+		    // lol idk how to do this yet so exit
+		    exit(0);
+		  }
+		    break;
+		  }
 
-		case
+		case "pwd":
+		  getcwd();
+		  break;
+
+		case "wait":
+		  // i'm waiting on my brain to work
+		  exit(0);
+		  break;
+
+		default:
+		    
+		    
 		}
 		
 		// exits the shell when called	
