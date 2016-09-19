@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 
 	while(1) {
 		// the shell print	
-		printf("mysh> ");
+		printf("TYLERSMELLS> ");
 		// read in from standard input
 		fgets(input,sizeof(input),stdin);
 
