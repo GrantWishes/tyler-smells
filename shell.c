@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <sys/syscall.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define MAX_INPUT (512)
 
@@ -10,20 +11,37 @@ void error() {
 	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
+void parse(char arguments) {
+	char args[MAX_INPUT] = arguments;
+
+
+}
 
 int main(int argc, char *argv[]) {
-	char input[MAX_INPUT];
+
+	char input[MAX_INPUT];	
+	char exitString[MAX_INPUT] = "exit";
+
 	while(1) {
+		// the shell print	
 		printf("mysh> ");
-		fgets(input,MAX_INPUT,stdin);		
-		printf("You inputted: %s\n", input);
+		// read in from standard input
+		fgets(input,sizeof(input),stdin);
 
+		// black magic code that gets rid of a stupid newline character
+		input[strcspn(input,"\n")] = '\0';	
+	
+		parse(input);
 
+		// exits the shell when called	
+		if(strcmp(input,"exit") == 0) {
+			exit(0);
+		}
 	
 
 
 
-
+		
 
 
 	}
