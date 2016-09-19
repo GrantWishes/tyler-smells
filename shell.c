@@ -11,16 +11,17 @@ void error() {
 	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
-void parse(char arguments) {
-	char args[MAX_INPUT] = arguments;
+void parse(char arguments[]) {
+	char **args;	// pointer to a pointer. for multiple words
+	printf("The string passed: %s\n",args);	
 
+		
 
 }
 
 int main(int argc, char *argv[]) {
 
 	char input[MAX_INPUT];	
-	char exitString[MAX_INPUT] = "exit";
 
 	while(1) {
 		// the shell print	
@@ -30,9 +31,9 @@ int main(int argc, char *argv[]) {
 
 		// black magic code that gets rid of a stupid newline character
 		input[strcspn(input,"\n")] = '\0';	
-	
-		parse(input);
 
+		parse(input);
+		
 		// exits the shell when called	
 		if(strcmp(input,"exit") == 0) {
 			exit(0);
