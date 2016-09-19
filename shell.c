@@ -11,10 +11,15 @@ void error() {
 	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
-void parse(char arguments[]) {
+char[] parse(char arguments[]) {
 	char **args;	// pointer to a pointer. for multiple words
+	char *ptr;
 
-	
+	if(ptr) { 
+
+
+	}
+
 
 }
 
@@ -29,15 +34,9 @@ int main(int argc, char *argv[]) {
 		fgets(input,sizeof(input),stdin);
 
 		// black magic code that gets rid of a stupid newline character
-		input[strcspn(input,"\n")] = '\0';
+		input[strcspn(input,"\n")] = '\0';	
 
-		char* args;
-
-		args = parse(input);
-	        switch(input) {
-		case "exit" :
-		  
-		}
+		parse(input);
 		
 		// exits the shell when called	
 		if(strcmp(input,"exit") == 0) {
