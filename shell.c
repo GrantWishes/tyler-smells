@@ -14,6 +14,8 @@ void error() {
 void parse(char arguments[]) {
 	char **args;	// pointer to a pointer. for multiple words
 
+	
+
 }
 
 int main(int argc, char *argv[]) {
