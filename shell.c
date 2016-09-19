@@ -36,9 +36,7 @@ int main(int argc, char *argv[]) {
 		// black magic code that gets rid of a stupid newline character
 		input[strcspn(input,"\n")] = '\0';	
 
-<<<<<<< HEAD
 		parse(input);
-=======
 		args = parse(input);
 	        switch(input) {
 		case "exit" :
