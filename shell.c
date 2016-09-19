@@ -13,9 +13,6 @@ void error() {
 
 void parse(char arguments[]) {
 	char **args;	// pointer to a pointer. for multiple words
-	printf("The string passed: %s\n",args);	
-
-		
 
 }
 
