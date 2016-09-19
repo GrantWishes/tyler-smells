@@ -34,7 +34,11 @@ int main(int argc, char *argv[]) {
 		args = parse(input);
 	        switch(input) {
 		case "exit" :
-		  
+		  exit(0);
+
+		case "cd" :
+
+		case
 		}
 		
 		// exits the shell when called	
