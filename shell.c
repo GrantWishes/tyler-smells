@@ -15,7 +15,7 @@ char[] parse(char arguments[]) {
 	char **args;	// pointer to a pointer. for multiple words
 	char *ptr;
 
-	if(ptr) { 
+	if(ptr) {
 
 
 	}
@@ -36,7 +36,18 @@ int main(int argc, char *argv[]) {
 		// black magic code that gets rid of a stupid newline character
 		input[strcspn(input,"\n")] = '\0';	
 
+<<<<<<< HEAD
 		parse(input);
+=======
+		args = parse(input);
+	        switch(input) {
+		case "exit" :
+		  exit(0);
+
+		case "cd" :
+
+		case
+		}
 		
 		// exits the shell when called	
 		if(strcmp(input,"exit") == 0) {
