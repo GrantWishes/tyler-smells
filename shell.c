@@ -29,9 +29,15 @@ int main(int argc, char *argv[]) {
 		fgets(input,sizeof(input),stdin);
 
 		// black magic code that gets rid of a stupid newline character
-		input[strcspn(input,"\n")] = '\0';	
+		input[strcspn(input,"\n")] = '\0';
 
-		parse(input);
+		char* args;
+
+		args = parse(input);
+	        switch(input) {
+		case "exit" :
+		  
+		}
 		
 		// exits the shell when called	
 		if(strcmp(input,"exit") == 0) {
