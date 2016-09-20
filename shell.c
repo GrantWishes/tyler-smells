@@ -12,19 +12,21 @@ void error() {
 }
 
 char **parse(char arguments[], size_t size) {
-	char **words = (char **) malloc(size);
+	char **words = (char **) malloc(size);		// the array of commands and arguments
 	char *ptr = strtok(arguments, " ");
 
-	if (words == NULL) {
+	if (words == NULL) {				// error checking
 		perror("words mem"); // delete at end
 		error();
 		}
 
+	// adding the words to the array
 	for (int i = 0; ptr != NULL; i++) {
 		words[i] = ptr;
 		ptr = strtok(NULL, " ");
 	}
 
+//	Debug print
 //	for(int i = 0; words[i] != NULL; i++) {
 //		printf("Word: %s\n", words[i]);
 //
@@ -36,8 +38,9 @@ char **parse(char arguments[], size_t size) {
 
 int main(int argc, char *argv[]) {
 
-	char input[MAX_INPUT];	
-	char **args;	
+	char input[MAX_INPUT];	// for the input string
+	char **args;		// for the command and arguments parsed
+	char pwd[MAX_INPUT*2];	// for the pwd functionality, size seemed common
 
 	while(1) {
 		// the shell print	
@@ -50,24 +53,31 @@ int main(int argc, char *argv[]) {
 
 		args = parse(input,sizeof(input));
 
-		for (int i = 0; args[i] != NULL; i++) {
-			printf("Word2: %s\n", args[i]);	
-		}
-
-	//        switch(input) {
-	//	case "exit" :
-	//	  exit(0);
+//	        switch(input) {
+//		case "exit" :
+//			exit(0);
+//			break;
 //
 //		case "cd" :
 //
 //		case
 //		}
 		
-		// exits the shell when called	
-		if(strcmp(input,"exit") == 0) {
+		// exits the shell	
+		if(strcmp(args[0],"exit") == 0) {
 			exit(0);
+		} 
+		// prints working directory
+		else if(strcmp(args[0],"pwd")==0) {
+			if(getcwd(pwd,sizeof(pwd)) != NULL) {
+				printf("%s\n", pwd);
+			}
+			else {
+				error();
+			}
 		}
 
+		
 	}
 
 	args[0] = '\0'; 
