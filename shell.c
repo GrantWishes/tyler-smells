@@ -11,21 +11,33 @@ void error() {
 	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
-char[] parse(char arguments[]) {
-	char **args;	// pointer to a pointer. for multiple words
-	char *ptr;
+char **parse(char arguments[], size_t size) {
+	char **words = (char **) malloc(size);
+	char *ptr = strtok(arguments, " ");
 
-	if(ptr) {
+	if (words == NULL) {
+		perror("words mem"); // delete at end
+		error();
+		}
 
-
+	for (int i = 0; ptr != NULL; i++) {
+		words[i] = ptr;
+		ptr = strtok(NULL, " ");
 	}
 
+//	for(int i = 0; words[i] != NULL; i++) {
+//		printf("Word: %s\n", words[i]);
+//
+//	}
+
+	return words;
 
 }
 
 int main(int argc, char *argv[]) {
 
 	char input[MAX_INPUT];	
+	char **args;	
 
 	while(1) {
 		// the shell print	
@@ -36,30 +48,28 @@ int main(int argc, char *argv[]) {
 		// black magic code that gets rid of a stupid newline character
 		input[strcspn(input,"\n")] = '\0';	
 
-		parse(input);
-		args = parse(input);
-	        switch(input) {
-		case "exit" :
-		  exit(0);
+		args = parse(input,sizeof(input));
 
-		case "cd" :
-
-		case
+		for (int i = 0; args[i] != NULL; i++) {
+			printf("Word2: %s\n", args[i]);	
 		}
+
+	//        switch(input) {
+	//	case "exit" :
+	//	  exit(0);
+//
+//		case "cd" :
+//
+//		case
+//		}
 		
 		// exits the shell when called	
 		if(strcmp(input,"exit") == 0) {
 			exit(0);
 		}
-	
-
-
-
-		
-
 
 	}
 
-
+	args[0] = '\0'; 
 
 }
