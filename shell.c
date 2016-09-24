@@ -19,7 +19,11 @@ char **parse(char arguments[], size_t size) {
 		perror("words mem"); // delete at end
 		error();
 		}
-
+	// for empty or only space strings
+	if(ptr == NULL){
+		words[0] = "";
+		return words;
+	}
 	// adding the words to the array
 	for (int i = 0; ptr != NULL; i++) {
 		words[i] = ptr;
@@ -31,7 +35,6 @@ char **parse(char arguments[], size_t size) {
 //		printf("Word: %s\n", words[i]);
 //
 //	}
-
 	return words;
 
 }
@@ -41,6 +44,8 @@ int main(int argc, char *argv[]) {
 	char input[MAX_INPUT];	// for the input string
 	char **args;		// for the command and arguments parsed
 	char pwd[MAX_INPUT*2];	// for the pwd functionality, size seemed common
+
+	
 
 	while(1) {
 		// the shell print	
@@ -53,16 +58,6 @@ int main(int argc, char *argv[]) {
 
 		args = parse(input,sizeof(input));
 
-//	        switch(input) {
-//		case "exit" :
-//			exit(0);
-//			break;
-//
-//		case "cd" :
-//
-//		case
-//		}
-		
 		// exits the shell	
 		if(strcmp(args[0],"exit") == 0) {
 			exit(0);
@@ -88,10 +83,17 @@ int main(int argc, char *argv[]) {
 				}
 			}
 		}
+		else if(strcmp(args[0], "") == 0) {
+			continue;
+		}
 
-		
+
+
+
+
+		args[0] = '\0';
 	}
 
 	args[0] = '\0';				// clears the array 
-
+	return 0;
 }
