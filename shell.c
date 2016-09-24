@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_INPUT (512)
+#define MAX_INPUT (513)
 
 void error() {
 	char error_message[30] = "An error has occured\n";
@@ -76,10 +76,22 @@ int main(int argc, char *argv[]) {
 				error();
 			}
 		}
+		else if(strcmp(args[0],"cd")==0) {
+			if(args[1] == '\0') {
+				//char *home = getenv("HOME");
+				chdir(getenv("HOME"));		
+			}
+			else {
+				int c = chdir(args[1]);
+				if(c < 0) {
+					error();
+				}
+			}
+		}
 
 		
 	}
 
-	args[0] = '\0'; 
+	args[0] = '\0';				// clears the array 
 
 }
