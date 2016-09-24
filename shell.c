@@ -86,14 +86,21 @@ int main(int argc, char *argv[]) {
 		else if(strcmp(args[0], "") == 0) {
 			continue;
 		}
+//		else {
+		//	int pid = fork();		//i accidentally fork bombed here
+//			if(pid < 0) {
+//				error();
+//			}
+//			else if(pid == 0) {
+//				execvp(args[0],args);
+//			}
+//		}
 
 
 
 
-
-		args[0] = '\0';
+		args[0] = '\0';			// clears the array
 	}
 
-	args[0] = '\0';				// clears the array 
 	return 0;
 }
