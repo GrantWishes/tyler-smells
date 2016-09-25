@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define MAX_INPUT (513)
 
@@ -21,6 +22,7 @@ char **parse(char arguments[], size_t size) {
 		perror("words mem"); // delete at end
 		error();
 		}
+
 	// for empty or only space strings
 	if(ptr == NULL){
 		words[0] = "";
@@ -28,6 +30,12 @@ char **parse(char arguments[], size_t size) {
 	}
 	// adding the words to the array
 	for (int i = 0; ptr != NULL; i++) {
+		bool isPy = false;
+		char* ret;
+		ret = strstr(ptr, ".py\0");
+		if (ret != NULL) {
+		  isPy = true;
+		}
 		words[i] = ptr;
 		ptr = strtok(NULL, " ");
 	}
@@ -92,7 +100,7 @@ int main(int argc, char *argv[]) {
 		else {
 			pid_t pid = fork();   //i accidentally fork bombed here
 			int status;
-
+			
 			if(pid < 0) {
 				error();
 			}
