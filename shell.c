@@ -35,6 +35,7 @@ char **parse(char arguments[], size_t size) {
 		ret = strstr(ptr, ".py\0");
 		if (ret != NULL) {
 		  isPy = true;
+		  printf("This is a python file");
 		}
 		words[i] = ptr;
 		ptr = strtok(NULL, " ");
@@ -63,12 +64,8 @@ int main(int argc, char *argv[]) {
 		fgets(input,sizeof(input),stdin);
 
 		// black magic code that gets rid of a stupid newline character
-		input[strcspn(input,"\n")] = '\0';	
-		
-		// exits the shell when called	
-		if(strcmp(input,"exit") == 0) {
+		input[strcspn(input,"\n")] = '\0';
 		args = parse(input,sizeof(input));
-
 		// exits the shell	
 		if(strcmp(args[0],"exit") == 0) {
 			exit(0);
@@ -123,5 +120,5 @@ int main(int argc, char *argv[]) {
 	}
 
 	return 0;
-	}
+	
 }
