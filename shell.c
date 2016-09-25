@@ -1,34 +1,52 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/syscall.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <string.h>
 #include <stdlib.h>
 
-#define MAX_INPUT (512)
+#define MAX_INPUT (513)
 
 void error() {
 	char error_message[30] = "An error has occured\n";
 	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
-char[] parse(char arguments[]) {
-	char **args;	// pointer to a pointer. for multiple words
-	char *ptr;
+char **parse(char arguments[], size_t size) {
+	char **words = (char **) malloc(size);		// the array of commands and arguments
+	char *ptr = strtok(arguments, " ");
 
-	if(ptr) {
-
-
+	if (words == NULL) {				// error checking
+		perror("words mem"); // delete at end
+		error();
+		}
+	// for empty or only space strings
+	if(ptr == NULL){
+		words[0] = "";
+		return words;
+	}
+	// adding the words to the array
+	for (int i = 0; ptr != NULL; i++) {
+		words[i] = ptr;
+		ptr = strtok(NULL, " ");
 	}
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 7f866092314da93b25fb3b2b3e85030b018870d5
+//	Debug print
+//	for(int i = 0; words[i] != NULL; i++) {
+//		printf("Word: %s\n", words[i]);
+//
+//	}
+	return words;
 }
 
 int main(int argc, char *argv[]) {
 
-	char input[MAX_INPUT];	
+	char input[MAX_INPUT];	// for the input string
+	char **args;		// for the command and arguments parsed
+	char pwd[MAX_INPUT*2];	// for the pwd functionality, size seemed common
+
+	
 
 	while(1) {
 		// the shell print	
@@ -38,53 +56,64 @@ int main(int argc, char *argv[]) {
 
 		// black magic code that gets rid of a stupid newline character
 		input[strcspn(input,"\n")] = '\0';	
-
-		parse(input);
-		args = parse(input);
-	        switch(input) {
-		case "exit" {
-		  exit(0);
-		  break;
-		}
-
-		case "cd" {
-		  if ((args[1]) == NULL) {
-		    getenv("HOME");
-		  }
-		  else {
-		    // lol idk how to do this yet so exit
-		    exit(0);
-		  }
-		    break;
-		  }
-
-		case "pwd":
-		  getcwd();
-		  break;
-
-		case "wait":
-		  // i'm waiting on my brain to work
-		  exit(0);
-		  break;
-
-		default:
-		    
-		    
-		}
 		
 		// exits the shell when called	
 		if(strcmp(input,"exit") == 0) {
+		args = parse(input,sizeof(input));
+
+		// exits the shell	
+		if(strcmp(args[0],"exit") == 0) {
 			exit(0);
+		} 
+		// prints working directory
+		else if(strcmp(args[0],"pwd")==0) {
+			if(getcwd(pwd,sizeof(pwd)) != NULL) {
+				printf("%s\n", pwd);
+			}
+			else {
+				error();
+			}
+		}
+		else if(strcmp(args[0],"cd")==0) {
+			if(args[1] == '\0') {
+				//char *home = getenv("HOME");
+				chdir(getenv("HOME"));		
+			}
+			else {
+				int c = chdir(args[1]);
+				if(c < 0) {
+					error();
+				}
+			}
+		}
+		else if(strcmp(args[0], "") == 0) {
+			continue;
+		}
+		else {
+			pid_t pid = fork();   //i accidentally fork bombed here
+			int status;
+
+			if(pid < 0) {
+				error();
+			}
+			else if(pid == 0) {
+				if(execvp(args[0],args) < 0) {
+					error();
+					exit(1);
+				}
+			}
+
+			else {
+				while(wait(&status)!=pid) ;
+			}
 		}
 	
 
 
 
-		
-
-
+		args[0] = '\0';			// clears the array
 	}
 
-
-
+	return 0;
+	}
 }
