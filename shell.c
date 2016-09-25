@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/syscall.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -86,14 +88,30 @@ int main(int argc, char *argv[]) {
 		else if(strcmp(args[0], "") == 0) {
 			continue;
 		}
+		else {
+			pid_t pid = fork();   //i accidentally fork bombed here
+			int status;
+
+			if(pid < 0) {
+				error();
+			}
+			else if(pid == 0) {
+				if(execvp(args[0],args) < 0) {
+					error();
+					exit(1);
+				}
+			}
+
+			else {
+				while(wait(&status)!=pid) ;
+			}
+		}
+	
 
 
 
-
-
-		args[0] = '\0';
+		args[0] = '\0';			// clears the array
 	}
 
-	args[0] = '\0';				// clears the array 
 	return 0;
 }
