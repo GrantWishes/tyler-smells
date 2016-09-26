@@ -33,7 +33,7 @@ char **parse(char arguments[], size_t size) {
 	if (words == NULL) {				
 		perror("words mem"); // delete at end
 		error();
-		}
+	}
 
 	/* for empty or only space strings, makes it work properly */
 	if(ptr == NULL){
