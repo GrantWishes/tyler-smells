@@ -7,35 +7,41 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define MAX_INPUT (513)
+#define MAX_INPUT (513) // 512 characters + carriage return
 
 void error() {
+	/* The one true error message. */
 	char error_message[30] = "An error has occured\n";
 	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
 char **parse(char arguments[], size_t size) {
-	char **words = (char **) malloc(size);		// the array of commands and arguments
+	/* the array of commands and args
+	   char array filled with char arrays so it's ** */	
+	char **words = (char **) malloc(size);	
+	/* pointer to each individual word */
 	char *ptr = strtok(arguments, " ");
 
-	if (words == NULL) {				// error checking
+	/* error checking */
+	if (words == NULL) {				
 		perror("words mem"); // delete at end
 		error();
 		}
 
-	// for empty or only space strings
+	/* for empty or only space strings, makes it work properly */
 	if(ptr == NULL){
 		words[0] = "";
 		return words;
 	}
-	// adding the words to the array
+	/* adding the words to the array */
 	for (int i = 0; ptr != NULL; i++) {
-		bool isPy = false;
-		char* ret;
+		bool isPy = false;	//special case for python scripts
+		char* ret;		//the substring we're looking for
 		ret = strstr(ptr, ".py\0");
+		/*if it's a python file, we gotta do something diff */
 		if (ret != NULL) {
 		  isPy = true;
-		  printf("This is a python file");
+		  printf("This is a python file\n");
 		}
 		words[i] = ptr;
 		ptr = strtok(NULL, " ");
