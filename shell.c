@@ -71,6 +71,13 @@ int main(int argc, char *argv[]) {
 		if(fgets(input,sizeof(input),stdin) == NULL) {
 			error();
 		}
+		if((strlen(input) == (MAX_INPUT-1)) && (input[MAX_INPUT] != '\0')) {
+			error();
+			int temp;
+			while(temp = fgetc(stdin) != '\n' && temp != EOF);
+			continue;
+		}
+
 
 		// black magic code that gets rid of a stupid newline character
 		input[strcspn(input,"\n")] = '\0';
