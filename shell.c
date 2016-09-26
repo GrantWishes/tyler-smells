@@ -68,7 +68,9 @@ int main(int argc, char *argv[]) {
 		// the shell print	
 		printf("mysh> ");
 		// read in from standard input
-		fgets(input,sizeof(input),stdin);
+		if(fgets(input,sizeof(input),stdin) == NULL) {
+			error();
+		}
 
 		// black magic code that gets rid of a stupid newline character
 		input[strcspn(input,"\n")] = '\0';
@@ -88,12 +90,11 @@ int main(int argc, char *argv[]) {
 		}
 		else if(strcmp(args[0],"cd")==0) {
 			if(args[1] == '\0') {
-				//char *home = getenv("HOME");
 				chdir(getenv("HOME"));		
 			}
 			else {
-				int c = chdir(args[1]);
-				if(c < 0) {
+				int c;
+				if(c = chdir(args[1]) < 0) {
 					error();
 				}
 			}
