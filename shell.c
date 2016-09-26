@@ -21,8 +21,8 @@ char **parse(char arguments[], size_t size) {
 	char **words = (char **) malloc(size);	
 	/* pointer to each individual word */
 	char *ptr = strtok(arguments, " ");
-	int i;
-        char* pyPtr;		//the substring we're looking for
+	int i = 0;		//this variable taught me about undefined behavior
+	char* pyPtr;		//the substring we're looking for
 	pyPtr = strstr(ptr, ".py\0");
 	/*if it's a python file, we gotta do something diff */
 	if (pyPtr != NULL) {
@@ -49,10 +49,10 @@ char **parse(char arguments[], size_t size) {
 	}
 
 	//	Debug print
-	for(int i = 0; words[i] != NULL; i++) {
-		printf("Word: %s\n", words[i]);
-
-	}
+//	for(int j = 0; words[j] != NULL; j++) {
+//		printf("Word: %s\n", words[j]);
+//
+//	}
 	return words;
 }
 
