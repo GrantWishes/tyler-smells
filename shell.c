@@ -21,7 +21,14 @@ char **parse(char arguments[], size_t size) {
 	char **words = (char **) malloc(size);	
 	/* pointer to each individual word */
 	char *ptr = strtok(arguments, " ");
-
+	int i;
+        char* pyPtr;		//the substring we're looking for
+	pyPtr = strstr(ptr, ".py\0");
+	/*if it's a python file, we gotta do something diff */
+	if (pyPtr != NULL) {
+	  i = 1;
+	  words[0] = "python";
+        }
 	/* error checking */
 	if (words == NULL) {				
 		perror("words mem"); // delete at end
@@ -34,24 +41,18 @@ char **parse(char arguments[], size_t size) {
 		return words;
 	}
 	/* adding the words to the array */
-	for (int i = 0; ptr != NULL; i++) {
-		bool isPy = false;	//special case for python scripts
-		char* ret;		//the substring we're looking for
-		ret = strstr(ptr, ".py\0");
-		/*if it's a python file, we gotta do something diff */
-		if (ret != NULL) {
-		  isPy = true;
-		  printf("This is a python file\n");
-		}
+	
+	
+	for (i; ptr != NULL; i++) {
 		words[i] = ptr;
 		ptr = strtok(NULL, " ");
 	}
 
-//	Debug print
-//	for(int i = 0; words[i] != NULL; i++) {
-//		printf("Word: %s\n", words[i]);
-//
-//	}
+	//	Debug print
+	for(int i = 0; words[i] != NULL; i++) {
+		printf("Word: %s\n", words[i]);
+
+	}
 	return words;
 }
 
