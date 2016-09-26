@@ -35,7 +35,7 @@ char **parse(char arguments[], size_t size) {
 		ret = strstr(ptr, ".py\0");
 		if (ret != NULL) {
 		  isPy = true;
-		  printf("This is a python file");
+		  printf("This is a python file\n");
 		}
 		words[i] = ptr;
 		ptr = strtok(NULL, " ");
