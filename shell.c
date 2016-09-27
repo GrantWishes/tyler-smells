@@ -40,7 +40,7 @@ char **parse(char arguments[], size_t size) {
 	  count = 0; // Initialize count to be 0
 	  while (myPtr2 != NULL) { // while the second pointer has
 	    // a value, keep incrementing count
-	    count += 1;
+	    count++ ;
 	    myPtr2 = strtok(NULL, ">");
 	  }
 	  if (count == 2) { // At this point, count needs to equal
@@ -52,7 +52,7 @@ char **parse(char arguments[], size_t size) {
 	      // if the arrow has already been passed then we need to
 	      // increment count to keep track of args after it
 	      if (arrowActive) {
-		count += 1;
+		count++;
 	      }
 	      // active the arrow boolean if we have encountered the arrow in
 	      // the line
@@ -124,12 +124,15 @@ int main(int argc, char *argv[]) {
 	
 
 	while(1) {
-		// the shell print	
+		/* The shell prompt */	
 		printf("mysh> ");
-		// read in from standard input
+		/* read in from standard input */
 		if(fgets(input,sizeof(input),stdin) == NULL) {
 			error();
 		}
+
+		/* If the input is too large takes up 512 bytes with no termination
+  		   we just eat the remaining input into temp			 */
 		if((strlen(input) == (MAX_INPUT-1)) && (input[MAX_INPUT] != '\0')) {
 			error();
 			int temp;
@@ -138,15 +141,18 @@ int main(int argc, char *argv[]) {
 		}
 
 
-		// black magic code that gets rid of a stupid newline character
+		/* black magic code that gets rid of a stupid newline character */
 		input[strcspn(input,"\n")] = '\0';
+
+		/* get our arguments in an array form */
 		args = parse(input,sizeof(input));
-		// exits the shell	
+
+		/* Exit command */	
 		if(strcmp(args[0],"exit") == 0) {
 			exit(0);
 		}
 		
-		// prints working directory
+		/* print working directory command */
 		else if(strcmp(args[0],"pwd")==0) {
 			if(getcwd(pwd,sizeof(pwd)) != NULL) {
 				printf("%s\n", pwd);
@@ -155,10 +161,13 @@ int main(int argc, char *argv[]) {
 				error();
 			}
 		}
+		/* change direcotry command */
 		else if(strcmp(args[0],"cd")==0) {
+			// if no directory, go to home
 			if(args[1] == '\0') {
 				chdir(getenv("HOME"));		
 			}
+			// otherwise, go to the directory specified
 			else {
 				int c;
 				if(c = chdir(args[1]) < 0) {
@@ -166,9 +175,11 @@ int main(int argc, char *argv[]) {
 				}
 			}
 		}
+		/* Handles empty inputs */
 		else if(strcmp(args[0], "") == 0) {
 			continue;
 		}
+		/* If it's not one of these (or wait), try execvp */
 		else {
 			pid_t pid = fork();   //i accidentally fork bombed here
 			int status;
@@ -176,13 +187,14 @@ int main(int argc, char *argv[]) {
 			if(pid < 0) {
 				error();
 			}
+			/* The child process runs the command */
 			else if(pid == 0) {
 				if(execvp(args[0],args) < 0) {
 					error();
 					exit(1);
 				}
 			}
-
+			/* The parent process waits on the child */
 			else {
 				while(wait(&status)!=pid) ;
 			}
@@ -190,8 +202,8 @@ int main(int argc, char *argv[]) {
 	
 
 
-
-		args[0] = '\0';			// clears the array
+		/* clears the array for the next batch of arguments */
+		args[0] = '\0';			
 	}
 
 	return 0;
