@@ -23,18 +23,13 @@ char **parse(char arguments[], size_t size) {
 
 	// TYLER'S GARBAGE CODE STARTS HERE
 	
-	char *myPtr; // the > substring we're looking for
+	const char *myPtr; // the > substring we're looking for
         bool validOutputCommand = false; // boolean to determine whether > is valid
 	myPtr = strstr(arguments, " > "); // is > present? Well if it is then gg
 	if (myPtr != NULL) {
 	  printf("You made it to the > branch\n");
-	  myPtr = strtok(arguments, " > ");
-	  char *outputPtr;
-	  outputPtr = strtok(myPtr, " ");
-	  if (outputPtr == NULL) {
-	    validOutputCommand = true;
-	    printf("You made it to the valid > branch\n");
-	  }
+	  myPtr = strtok(arguments, " >"); // split the string at the > marker
+	  validOutputCommand = true; // the ">" was entered so switch this on
 	}
 
 	// END TYLER'S GARBAGE CODE
@@ -107,7 +102,8 @@ int main(int argc, char *argv[]) {
 		// exits the shell	
 		if(strcmp(args[0],"exit") == 0) {
 			exit(0);
-		} 
+		}
+		
 		// prints working directory
 		else if(strcmp(args[0],"pwd")==0) {
 			if(getcwd(pwd,sizeof(pwd)) != NULL) {
