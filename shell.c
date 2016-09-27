@@ -20,13 +20,13 @@ char **parse(char arguments[], size_t size) {
 	   char array filled with char arrays so it's ** */	
 	char **words = (char **) malloc(size);
 	char *ptr = NULL;
-
-
 	
 	// TYLER'S GARBAGE CODE STARTS HERE
 
 	char argCopy[strlen(arguments)];
+	char argCopy2[strlen(arguments)];
 	strcpy(argCopy, arguments);
+	strcpy(argCopy2, arguments);
 	char *myPtr = NULL; // the > substring we're looking for
         bool redirect; // boolean to determine whether > is valid
 	myPtr = strstr(arguments, ">"); // is > present? Well if it is then gg
@@ -40,7 +40,7 @@ char **parse(char arguments[], size_t size) {
 	  count = 0; // Initialize count to be 0
 	  while (myPtr2 != NULL) { // while the second pointer has
 	    // a value, keep incrementing count
-	    count += 1;
+	    count++;
 	    myPtr2 = strtok(NULL, ">");
 	  }
 	  if (count == 2) { // At this point, count needs to equal
@@ -48,11 +48,12 @@ char **parse(char arguments[], size_t size) {
 	    myPtr3 = strtok(argCopy, " "); // split the string at spaces
 	    arrowActive = false; //arrowActive boolean is currently set to false
 	    count = 0;
+
 	    while (myPtr3 != NULL) {
 	      // if the arrow has already been passed then we need to
 	      // increment count to keep track of args after it
 	      if (arrowActive) {
-		count += 1;
+		count++;
 	      }
 	      // active the arrow boolean if we have encountered the arrow in
 	      // the line
