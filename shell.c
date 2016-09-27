@@ -18,9 +18,31 @@ void error() {
 char **parse(char arguments[], size_t size) {
 	/* the array of commands and args
 	   char array filled with char arrays so it's ** */	
-	char **words = (char **) malloc(size);	
+	char **words = (char **) malloc(size);
+	char *ptr = NULL;
+
+	// TYLER'S GARBAGE CODE STARTS HERE
+	
+	char *myPtr; // the > substring we're looking for
+        bool validOutputCommand = false; // boolean to determine whether > is valid
+	myPtr = strstr(arguments, " > "); // is > present? Well if it is then gg
+	if (myPtr != NULL) {
+	  printf("You made it to the > branch\n");
+	  myPtr = strtok(arguments, " > ");
+	  char *outputPtr;
+	  outputPtr = strtok(myPtr, " ");
+	  if (outputPtr == NULL) {
+	    validOutputCommand = true;
+	    printf("You made it to the valid > branch\n");
+	  }
+	}
+
+	// END TYLER'S GARBAGE CODE
+
+	
 	/* pointer to each individual word */
-	char *ptr = strtok(arguments, " ");
+	ptr = strtok(arguments, " ");
+	
 	int i = 0;		//this variable taught me about undefined behavior
 	char* pyPtr;		//the substring we're looking for
 	pyPtr = strstr(ptr, ".py\0");
