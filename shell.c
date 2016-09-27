@@ -21,19 +21,51 @@ char **parse(char arguments[], size_t size) {
 	char **words = (char **) malloc(size);
 	char *ptr = NULL;
 
+
+	
 	// TYLER'S GARBAGE CODE STARTS HERE
 	
-	const char *myPtr; // the > substring we're looking for
+	char *myPtr = NULL; // the > substring we're looking for
         bool validOutputCommand = false; // boolean to determine whether > is valid
-	myPtr = strstr(arguments, " > "); // is > present? Well if it is then gg
+	myPtr = strstr(arguments, " >"); // is > present? Well if it is then gg
+	int count;
+	bool arrowActive;
+        char *myPtr2 = NULL;
 	if (myPtr != NULL) {
 	  printf("You made it to the > branch\n");
-	  myPtr = strtok(arguments, " >"); // split the string at the > marker
-	  validOutputCommand = true; // the ">" was entered so switch this on
+	  myPtr2 = strtok(arguments, " >"); // split the string at the > marker
+	  count = 0; // Initialize count to be 0
+	  while (myPtr2 != NULL) { // while the second pointer has a value, keep incrementing count
+	    count += 1;
+	    myPtr2 = strtok(NULL, " >");
+	  }
+	  if (count == 2) { // At this point, count needs to equal 2 otherwise there were too many ">" marks
+	    printf("You made it this far\n");
+	    myPtr2 = strtok(arguments, " "); // split the string at spaces
+	    arrowActive = false; //arrowActive boolean is currently set to false
+	    while (myPtr2 != NULL) {
+	      // if the arrow has already been passed then we need to increment count to keep track of args after it
+	      if (arrowActive) {
+		count += 1;
+	      }
+	      // active the arrow boolean if we have encountered the arrow in the line
+	      else if (strcmp(myPtr2, " >") == 0) {
+		count = 0;
+		arrowActive = true;
+	      }
+	      myPtr2 = strtok(NULL, " ");
+	    }
+	    // if there was only one argument after it, then the Redirection command is valid
+	    if (count = 1) {
+	      validOutputCommand = true;
+	      printf("OMFG IT WORKED!!!!\n");
+	    }
+	  }
 	}
 
 	// END TYLER'S GARBAGE CODE
 
+	
 	
 	/* pointer to each individual word */
 	ptr = strtok(arguments, " ");
