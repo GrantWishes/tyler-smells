@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/syscall.h>
+#include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
@@ -18,11 +19,28 @@ void error() {
 	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
-void batch(char* inFile){
+char **batch(char* inFile){
 // read in input
 // split on \n
 // feed each to main? might have to manipulate a bit
+	FILE *fp;
+	fp = fopen(inFile,"r");
+	if(fp == NULL) {
+		error();
+		return NULL;
+	}
 
+	struct stat st;
+	stat(inFile,&st);
+	int fileSize = st.st_size;
+
+	printf("File Size: %d\n",fileSize);
+
+	char **inputs = (char **) malloc(fileSize);
+	
+	fclose(fp);
+
+	return NULL;
 }
 
 
@@ -157,6 +175,9 @@ int main(int argc, char *argv[]) {
 	char **args;		// for the command and arguments parsed
 	char pwd[MAX_INPUT*2];	// for the pwd functionality, size seemed common
 
+	bool stop = true;
+
+
 	for(int i = 0; i < argc; i++) {
 		//printf("Argument: %s\n", argv[i]);
 	}
@@ -165,7 +186,7 @@ int main(int argc, char *argv[]) {
 		batch(argv[1]);
 	}
 
-	while(1) {
+	while(stop) {
 		/* The shell prompt */	
 		printf("mysh> ");
 		/* read in from standard input */
