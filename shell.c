@@ -26,11 +26,7 @@ char **parse(char arguments[], size_t size) {
 	   char array filled with char arrays so it's ** */	
 	char **words = (char **) malloc(size);
 	char *ptr = NULL;
-
-
 	
-	// TYLER'S GARBAGE CODE STARTS HERE
-
 //	char argCopy[strlen(arguments)];
 //	strcpy(argCopy, arguments);
 //	char *myPtr = NULL; // the > substring we're looking for
