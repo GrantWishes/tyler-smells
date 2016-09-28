@@ -100,6 +100,14 @@ char **parse(char arguments[], size_t size) {
 	
 	/* pointer to each individual word */
 	ptr = strtok(arguments, "> ");
+
+	/* for empty or only space strings, makes it work properly */
+	if(ptr == NULL){
+		words[0] = "";
+		return words;
+	}
+
+
 	
 	int i = 0;		//this variable taught me about undefined behavior
 	char* pyPtr;		//the substring we're looking for
@@ -115,11 +123,6 @@ char **parse(char arguments[], size_t size) {
 		error();
 	}
 
-	/* for empty or only space strings, makes it work properly */
-	if(ptr == NULL){
-		words[0] = "";
-		return words;
-	}
 	/* adding the words to the array */
 	
 	for (i; ptr != NULL; i++) {
@@ -137,10 +140,10 @@ char **parse(char arguments[], size_t size) {
 	}
 
 	//	Debug print
-//	for(int j = 0; words[j] != NULL; j++) {
-//		printf("Word: %s\n", words[j]);
-//
-//	}
+	for(int j = 0; words[j] != NULL; j++) {
+		printf("Word: %s\n", words[j]);
+
+	}
 	return words;
 }
 
@@ -151,7 +154,7 @@ int main(int argc, char *argv[]) {
 	char pwd[MAX_INPUT*2];	// for the pwd functionality, size seemed common
 
 	for(int i = 0; i < argc; i++) {
-		printf("Argument: %s\n", argv[i]);
+		//printf("Argument: %s\n", argv[i]);
 	}
 
 	while(1) {
@@ -178,7 +181,7 @@ int main(int argc, char *argv[]) {
 		/* get our arguments in an array form */
 		args = parse(input,sizeof(input));
 
-		printf("Output file is %s\n", outFile);
+		//printf("Output file is %s\n", outFile);
 
 		/* Exit command */	
 		if(strcmp(args[0],"exit") == 0) {
@@ -208,7 +211,7 @@ int main(int argc, char *argv[]) {
 				error();
 			}
 		}
-		/* change direcotry command */
+		/* change directory command */
 		else if(strcmp(args[0],"cd")==0) {
 			// if no directory, go to home
 			if(args[1] == '\0') {
@@ -224,14 +227,13 @@ int main(int argc, char *argv[]) {
 		}
 		/* Handles empty inputs */
 		else if(strcmp(args[0], "") == 0) {
-			continue;
 		}
 		/* If it's not one of these (or wait), try execvp */
 		else {
 			pid_t pid = fork();   //i accidentally fork bombed here
 			int status;
 			
-			if(pid < (pid_t) 0) {
+			if(pid < 0) {
 				error();
 			}
 			/* The child process runs the command */
@@ -241,6 +243,7 @@ int main(int argc, char *argv[]) {
 					int fd = open(outFile, O_WRONLY|O_CREAT|O_TRUNC, S_IRUSR|S_IWUSR);
 					if(fd < 0) {
 						error();
+						exit(1);
 					}
 
 					if(execvp(args[0],args) < 0) {
@@ -258,7 +261,7 @@ int main(int argc, char *argv[]) {
 			}
 			/* The parent process waits on the child */
 			else {
-				while(wait(&status)!=pid) ;
+				while(wait(&status)!=pid);
 			}
 		}
 	
