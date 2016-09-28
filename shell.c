@@ -23,58 +23,15 @@ char **parse(char arguments[], size_t size) {
 	   char array filled with char arrays so it's ** */	
 	char **words = (char **) malloc(size);
 	char *ptr = NULL;
+	char argCopy[strlen(arguments)];
+	strcpy(argCopy, arguments);
 	
-//	char argCopy[strlen(arguments)];
-//	strcpy(argCopy, arguments);
-//	char *myPtr = NULL; // the > substring we're looking for
-//        bool redirect; // boolean to determine whether > is valid
-//	myPtr = strstr(arguments, ">"); // is > present? Well if it is then gg
-//	int count; // initialize a count variable, will be used later
-//	bool arrowActive; // this boolean keeps track of when we hit a ">"
-  //      char *myPtr2 = NULL; // initialize a ptr
-//	char *myPtr3 = NULL; // initialize another ptr
-//	if (myPtr != NULL) {
-//	  myPtr2 = strtok(argCopy, ">"); // split the string
-//	  // at the > marker
-//	  count = 0; // Initialize count to be 0
-//	  while (myPtr2 != NULL) { // while the second pointer has
-//	    // a value, keep incrementing count
-//	    count++ ;
-//	    myPtr2 = strtok(NULL, ">");
-//	  }
-//	  if (count == 2) { // At this point, count needs to equal
-//	    // 2 otherwise there were too many ">" marks
-//	    strcpy(argCopy,arguments);
-//	    myPtr3 = strtok(argCopy, " "); // split the string at spaces
-//	    arrowActive = false; //arrowActive boolean is currently set to false
-//	    count = 0;
-//	    while (myPtr3 != NULL) {
-//	      // if the arrow has already been passed then we need to
-//	      // increment count to keep track of args after it
-//	      if (arrowActive) {
-//		count++;
-//	      }
-//	      // active the arrow boolean if we have encountered the arrow in
-//	      // the line
-//	      if (strcmp(myPtr3, ">") == 0) {
-//		arrowActive = true;
-//	      }
-//	      myPtr3 = strtok(NULL, " ");
-//	    }
-//	    // if there was only one argument after it, then the Redirection
-//	    // command is valid
-//	    if (count == 1) {
-//	      redirect = true;
-//	      printf("Redirection flag raised\n");
-//	    }
-//	    else {
-//	      redirect = false;
-//	    }
-//	  }
-//	}
 
-	// END TYLER'S GARBAGE CODE
 	// grant's garbo code here
+
+        if ((arguments[strlen(arguments)-1]) == '&') {
+	  printf("Background job flag raised.\n");
+	}
 	
 	bool redirect = false;
 	if(strstr(arguments,">") != NULL) {
@@ -92,6 +49,12 @@ char **parse(char arguments[], size_t size) {
 	}		
 
 	// grant's garbo ends here
+
+	/*bool backJob = false;
+	char *myPtr  = NULL;
+	myPtr = strtok(argCopy, " ");
+	char lastArg = (char*)(myPtr + ((sizeof(argCopy))-1));
+	printf("%c\n", lastArg);*/
 	
 	
 	/* pointer to each individual word */
@@ -123,7 +86,7 @@ char **parse(char arguments[], size_t size) {
 	
 	for (i; ptr != NULL; i++) {
 //		printf("Adding \"%s\" to index %d\n", ptr, i);
-		words[i] = ptr;
+	        words[i] = ptr;
 		ptr = strtok(NULL, "> ");
 		if(ptr == NULL) {
 			if(redirect == true) {
