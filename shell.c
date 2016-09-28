@@ -176,19 +176,26 @@ int main(int argc, char *argv[]) {
 	char pwd[MAX_INPUT*2];	// for the pwd functionality, size seemed common
 
 	bool stop = true;
-
+	bool isBatch = false;
 
 	for(int i = 0; i < argc; i++) {
 		//printf("Argument: %s\n", argv[i]);
 	}
 
 	if(argv[1] != NULL) {
+		isBatch = true;
 		batch(argv[1]);
 	}
 
 	while(stop) {
 		/* The shell prompt */	
 		printf("mysh> ");
+
+		if(isBatch) {
+			// for loop through args
+		}
+
+
 		/* read in from standard input */
 		if(fgets(input,sizeof(input),stdin) == NULL) {
 			error();
