@@ -18,7 +18,12 @@ void error() {
 	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
-void batch
+void batch(char* inFile){
+// read in input
+// split on \n
+// feed each to main? might have to manipulate a bit
+
+}
 
 
 char **parse(char arguments[], size_t size) {
@@ -154,6 +159,10 @@ int main(int argc, char *argv[]) {
 
 	for(int i = 0; i < argc; i++) {
 		//printf("Argument: %s\n", argv[i]);
+	}
+
+	if(argv[1] != NULL) {
+		batch(argv[1]);
 	}
 
 	while(1) {
