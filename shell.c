@@ -18,6 +18,9 @@ void error() {
 	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
+void batch
+
+
 char **parse(char arguments[], size_t size) {
 	/* the array of commands and args
 	   char array filled with char arrays so it's ** */	
