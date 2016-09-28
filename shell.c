@@ -18,6 +18,14 @@ void error() {
 	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
+void batch(char* inFile){
+// read in input
+// split on \n
+// feed each to main? might have to manipulate a bit
+
+}
+
+
 char **parse(char arguments[], size_t size) {
 	/* the array of commands and args
 	   char array filled with char arrays so it's ** */	
@@ -25,12 +33,13 @@ char **parse(char arguments[], size_t size) {
 	char *ptr = NULL;
 	char argCopy[strlen(arguments)];
 	strcpy(argCopy, arguments);
-	
 
-	// grant's garbo code here
-
+	bool backJob = false;
         if ((arguments[strlen(arguments)-1]) == '&') {
+	  backJob = true;
+	  (arguments[strlen(arguments)-1] = '\0');
 	  printf("Background job flag raised.\n");
+	  
 	}
 	
 	bool redirect = false;
@@ -114,6 +123,10 @@ int main(int argc, char *argv[]) {
 
 	for(int i = 0; i < argc; i++) {
 		//printf("Argument: %s\n", argv[i]);
+	}
+
+	if(argv[1] != NULL) {
+		batch(argv[1]);
 	}
 
 	while(1) {
