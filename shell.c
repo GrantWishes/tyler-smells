@@ -33,14 +33,6 @@ char **parse(char arguments[], size_t size) {
 	char *ptr = NULL;
 	char argCopy[strlen(arguments)];
 	strcpy(argCopy, arguments);
-
-	bool backJob = false;
-        if ((arguments[strlen(arguments)-1]) == '&') {
-	  backJob = true;
-	  (arguments[strlen(arguments)-1] = '\0');
-	  printf("Background job flag raised.\n");
-	  
-	}
 	
 	bool redirect = false;
 	if(strstr(arguments,">") != NULL) {
@@ -59,13 +51,6 @@ char **parse(char arguments[], size_t size) {
 
 	// grant's garbo ends here
 
-	/*bool backJob = false;
-	char *myPtr  = NULL;
-	myPtr = strtok(argCopy, " ");
-	char lastArg = (char*)(myPtr + ((sizeof(argCopy))-1));
-	printf("%c\n", lastArg);*/
-	
-	
 	/* pointer to each individual word */
 	ptr = strtok(arguments, "> ");
 
@@ -120,6 +105,7 @@ int main(int argc, char *argv[]) {
 	char input[MAX_INPUT];	// for the input string
 	char **args;		// for the command and arguments parsed
 	char pwd[MAX_INPUT*2];	// for the pwd functionality, size seemed common
+	bool backJob;
 
 	for(int i = 0; i < argc; i++) {
 		//printf("Argument: %s\n", argv[i]);
@@ -150,15 +136,26 @@ int main(int argc, char *argv[]) {
 		/* black magic code that gets rid of a stupid newline character */
 		input[strcspn(input,"\n")] = '\0';
 
-		/* get our arguments in an array form */
+		bool backJob = false;
+		if ((input[strlen(input)-1]) == '&') {
+		  backJob = true;
+		  (input[strlen(input)-1] = '\0');
+		  printf("Background job flag raised.\n");
+		}
+
+		// Determine whether or not the command is a background process
+
+	        /* get our arguments in an array form */
 		args = parse(input,sizeof(input));
 
-		//printf("Output file is %s\n", outFile);
+		//printf("Output file is %s\n", outFile);	
 
+		
 		/* Exit command */	
 		if(strcmp(args[0],"exit") == 0) {
 			exit(0);
 		}
+
 		
 		/* print working directory command */
 		else if(strcmp(args[0],"pwd")==0) {
@@ -202,14 +199,21 @@ int main(int argc, char *argv[]) {
 		}
 		/* If it's not one of these (or wait), try execvp */
 		else {
-			pid_t pid = fork();   //i accidentally fork bombed here
-			int status;
+
+		  	pid_t pid = fork();   //i accidentally fork bombed here
+			//	int status;
 			
 			if(pid < 0) {
 				error();
 			}
 			/* The child process runs the command */
+
 			else if(pid ==  0) {
+			  // if this is a background job then call execvp
+			  if(backJob){
+			    execvp(args[0], args);
+			  }
+			  
 				if(outFile != NULL) {
 					close(1);
 					int fd = open(outFile, O_WRONLY|O_CREAT|O_TRUNC, S_IRUSR|S_IWUSR);
@@ -231,9 +235,15 @@ int main(int argc, char *argv[]) {
 					exit(1);
 				}
 			}
+			
 			/* The parent process waits on the child */
 			else {
-				while(wait(&status)!=pid);
+			  // if this is not a background job then wait
+			  if (backJob == false) {
+			    int status;
+			    waitpid(pid, &status, 0);
+			  }
+			  //while(wait(&status)!=pid);
 			}
 		}
 	
